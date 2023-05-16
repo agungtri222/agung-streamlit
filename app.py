@@ -73,53 +73,52 @@ def main():
 
         # encode using ordinal encoder and predict
         if submit:
-        input_array = np.array([collision,
-                    Age_band,Sex,Education,service_vehicle,
-                    Day_week,Accident_area], ndmin=2)
+            input_array = np.array([collision,
+                        Age_band,Sex,Education,service_vehicle,
+                        Day_week,Accident_area], ndmin=2)
+                
+            encoded_arr = list(encoder.transform(input_array).ravel())
+                
+            num_arr = [No_vehicles,No_casualties,Hour]
+            pred_arr = np.array(num_arr + encoded_arr).reshape(1,-1)        
             
-        encoded_arr = list(encoder.transform(input_array).ravel())
-            
-        num_arr = [No_vehicles,No_casualties,Hour]
-        pred_arr = np.array(num_arr + encoded_arr).reshape(1,-1)        
+            # predict the target from all the input features
+            prediction = model.predict(pred_arr)
+                
+            if prediction == 0:
+                st.write(f"The severity prediction is fatal injury⚠")
+            elif prediction == 1:
+                st.write(f"The severity prediction is serious injury")
+            else:
+                st.write(f"The severity prediction is slight injury")
+                
+            st.write("Developed By: Avi kumar Talaviya")
+            st.markdown("""Reach out to me on: [Twitter](https://twitter.com/avikumart_) |
+            [Linkedin](https://www.linkedin.com/in/avi-kumar-talaviya-739153147/) |
+            [Kaggle](https://www.kaggle.com/avikumart) 
+            """)
 
-        # predict the target from all the input features
-        prediction = model.predict(pred_arr)
-            
-        if prediction == 0:
-            st.write(f"The severity prediction is fatal injury⚠")
-        elif prediction == 1:
-            st.write(f"The severity prediction is serious injury")
-        else:
-            st.write(f"The severity prediction is slight injury")
-            
-        st.write("Developed By: Avi kumar Talaviya")
-        st.markdown("""Reach out to me on: [Twitter](https://twitter.com/avikumart_) |
-        [Linkedin](https://www.linkedin.com/in/avi-kumar-talaviya-739153147/) |
-        [Kaggle](https://www.kaggle.com/avikumart) 
+        a,b,c = st.columns([0.2,0.6,0.2])
+        with b:
+        st.image("banner-picture.jpeg", use_column_width=True)
+        
+        # description about the project and code files       
+        st.subheader("🧾Description:")
+        st.text("""This data set is collected from Addis Ababa Sub-city police departments for master's research work. 
+        The data set has been prepared from manual records of road traffic accidents of the year 2017-20. 
+        All the sensitive information has been excluded during data encoding and finally it has 32 features and 12316 instances of the accident.
+        Then it is preprocessed and for identification of major causes of the accident by analyzing it using different machine learning classification algorithms.
         """)
 
-    a,b,c = st.columns([0.2,0.6,0.2])
-    with b:
-    st.image("banner-picture.jpeg", use_column_width=True)
-    
-    # description about the project and code files       
-    st.subheader("🧾Description:")
-    st.text("""This data set is collected from Addis Ababa Sub-city police departments for master's research work. 
-    The data set has been prepared from manual records of road traffic accidents of the year 2017-20. 
-    All the sensitive information has been excluded during data encoding and finally it has 32 features and 12316 instances of the accident.
-    Then it is preprocessed and for identification of major causes of the accident by analyzing it using different machine learning classification algorithms.
-    """)
+        st.markdown("Source of the dataset: [Click Here](https://www.narcis.nl/dataset/RecordID/oai%3Aeasy.dans.knaw.nl%3Aeasy-dataset%3A191591)")
 
-    st.markdown("Source of the dataset: [Click Here](https://www.narcis.nl/dataset/RecordID/oai%3Aeasy.dans.knaw.nl%3Aeasy-dataset%3A191591)")
+        st.subheader("🧭 Problem Statement:")
+        st.text("""The target feature is Accident_severity which is a multi-class variable. 
+        The task is to classify this variable based on the other 31 features step-by-step by going through each day's task. 
+        The metric for evaluation will be f1-score
+        """)
 
-    st.subheader("🧭 Problem Statement:")
-    st.text("""The target feature is Accident_severity which is a multi-class variable. 
-    The task is to classify this variable based on the other 31 features step-by-step by going through each day's task. 
-    The metric for evaluation will be f1-score
-    """)
-
-    st.markdown("Please find GitHub repository link of project: [Click Here](https://github.com/avikumart/Road-Traffic-Severity-Classification-Project)")          
-  
+        st.markdown("Please find GitHub repository link of project: [Click Here](https://github.com/avikumart/Road-Traffic-Severity-Classification-Project)")          
 # run the main function        
 if __name__ == '__main__':
   main()
